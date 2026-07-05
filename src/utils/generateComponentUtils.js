@@ -5,6 +5,7 @@ import kebabCase from 'lodash/kebabCase.js';
 import snakeCase from 'lodash/snakeCase.js';
 import startCase from 'lodash/startCase.js';
 import componentCssTemplate from '../templates/component/componentCssTemplate.js';
+import componentIndexTemplate from '../templates/component/componentIndexTemplate.js';
 
 import componentJsTemplate from '../templates/component/componentJsTemplate.js';
 import componentLazyTemplate from '../templates/component/componentLazyTemplate.js';
@@ -15,6 +16,7 @@ import componentTestTestingLibraryTemplate from '../templates/component/componen
 import componentTestVitestTemplate from '../templates/component/componentTestVitestTemplate.js';
 import componentTsLazyTemplate from '../templates/component/componentTsLazyTemplate.js';
 import componentTsTemplate from '../templates/component/componentTsTemplate.js';
+import { formatContent } from './formatUtils.js';
 import { error, exitWithError, fileSummary } from './messagesUtils.js';
 
 const TEMPLATE_NAME_REGEX = /template[-_]?name/i;
@@ -62,7 +64,7 @@ function getCustomTemplate(componentName, templatePath) {
 
   try {
     const template = readFileSync(templatePath, 'utf8');
-    const filename = path.basename(templatePath).replace(/template[_-]?name/i, componentName);
+    const filename = path.basename(templatePath).replace(TEMPLATE_NAME_REGEX, componentName);
 
     return { template, filename };
   } catch {
@@ -333,6 +335,36 @@ function componentLazyTemplateGenerator({ cmd, componentName, cliConfigFile, con
   };
 }
 
+function componentIndexTemplateGenerator({ cmd, componentName, cliConfigFile, convertors }) {
+  const { usesTypeScript } = cliConfigFile;
+  const { customTemplates } = cliConfigFile.component[cmd.type];
+  let template = null;
+  let filename = null;
+
+  // Check for a custom index template.
+
+  if (customTemplates && customTemplates.index) {
+    const { template: customTemplate, filename: customTemplateFilename } = getCustomTemplate(
+      componentName,
+      customTemplates.index,
+    );
+
+    template = customTemplate;
+    filename = customTemplateFilename;
+  } else {
+    // Else use Casting built-in barrel/index template
+
+    template = componentIndexTemplate;
+    filename = usesTypeScript ? 'index.ts' : 'index.js';
+  }
+
+  return {
+    componentPath: componentDirectoryNameGenerator({ cmd, componentName, cliConfigFile, filename, convertors }),
+    filename,
+    template,
+  };
+}
+
 function customFileTemplateGenerator({ componentName, cmd, cliConfigFile, componentFileType, convertors }) {
   const { customTemplates } = cliConfigFile.component[cmd.type];
   const fileType = camelCase(componentFileType.split('with')[1]);
@@ -376,6 +408,7 @@ const buildInComponentFileTypes = {
   TEST: 'withTest',
   STORY: 'withStory',
   LAZY: 'withLazy',
+  INDEX: 'withIndex',
 };
 
 // Generate component template map
@@ -386,77 +419,99 @@ const componentTemplateGeneratorMap = {
   [buildInComponentFileTypes.TEST]: componentTestTemplateGenerator,
   [buildInComponentFileTypes.STORY]: componentStoryTemplateGenerator,
   [buildInComponentFileTypes.LAZY]: componentLazyTemplateGenerator,
+  [buildInComponentFileTypes.INDEX]: componentIndexTemplateGenerator,
 };
 
-export function generateComponent(componentName, cmd, cliConfigFile) {
+// Replace all template placeholders with their corresponding component name formats.
+
+export function applyConvertors(template, convertors) {
+  let processed = template;
+  Object.entries(convertors).forEach(([pattern, replacement]) => {
+    processed = processed.replaceAll(pattern, replacement);
+  });
+  return processed;
+}
+
+// Build the keyword replacement map for a given component name.
+
+export function buildConvertors(componentName) {
+  return {
+    'templatename': componentName,
+    'TemplateName': startCase(camelCase(componentName)).replace(/ /g, ''),
+    'templateName': camelCase(componentName),
+    'template-name': kebabCase(componentName),
+    'template_name': snakeCase(componentName),
+    'TEMPLATE_NAME': snakeCase(componentName).toUpperCase(),
+    'TEMPLATENAME': componentName.toUpperCase(),
+  };
+}
+
+export async function generateComponent(componentName, cmd, cliConfigFile) {
   const componentFileTypes = ['component', ...getCorrespondingComponentFileTypes(cmd)];
   const generatedFiles = [];
   let basePath = '';
 
-  componentFileTypes.forEach((componentFileType) => {
+  for (const componentFileType of componentFileTypes) {
     // Generate templates only if the component options (withStyle, withTest, etc..) are true,
     // or if the template type is "component"
 
     if (
-      (cmd[componentFileType] && cmd[componentFileType].toString() === 'true')
-      || componentFileType === buildInComponentFileTypes.COMPONENT
+      !(
+        (cmd[componentFileType] && cmd[componentFileType].toString() === 'true')
+        || componentFileType === buildInComponentFileTypes.COMPONENT
+      )
     ) {
-      const generateTemplate = componentTemplateGeneratorMap[componentFileType] || customFileTemplateGenerator;
-
-      const convertors = {
-        'templatename': componentName,
-        'TemplateName': startCase(camelCase(componentName)).replace(/ /g, ''),
-        'templateName': camelCase(componentName),
-        'template-name': kebabCase(componentName),
-        'template_name': snakeCase(componentName),
-        'TEMPLATE_NAME': snakeCase(componentName).toUpperCase(),
-        'TEMPLATENAME': componentName.toUpperCase(),
-      };
-
-      const { componentPath, filename, template } = generateTemplate({
-        cmd,
-        componentName,
-        cliConfigFile,
-        componentFileType,
-        convertors,
-      });
-
-      // Extract base path for summary
-      if (!basePath) {
-        basePath = path.dirname(componentPath);
-      }
-
-      // Make sure the component does not already exist in the path directory.
-
-      if (existsSync(componentPath)) {
-        generatedFiles.push({ filename, status: 'skipped', path: componentPath });
-      } else {
-        try {
-          if (!cmd.dryRun) {
-            // Replace all template placeholders with their corresponding component name formats
-            let processedTemplate = template;
-            Object.entries(convertors).forEach(([pattern, replacement]) => {
-              processedTemplate = processedTemplate.replaceAll(pattern, replacement);
-            });
-
-            outputFileSync(componentPath, processedTemplate);
-          }
-
-          generatedFiles.push({ filename, status: 'created', path: componentPath });
-        } catch (err) {
-          generatedFiles.push({ filename, status: 'failed', path: componentPath });
-          error(`Failed to create ${filename}`, {
-            details: err.message,
-            suggestions: [
-              'Check that you have write permissions to the target directory',
-              'Verify the path is valid',
-            ],
-          });
-        }
-      }
+      continue;
     }
-  });
+
+    const generateTemplate = componentTemplateGeneratorMap[componentFileType] || customFileTemplateGenerator;
+    const convertors = buildConvertors(componentName);
+
+    const { componentPath, filename, template } = generateTemplate({
+      cmd,
+      componentName,
+      cliConfigFile,
+      componentFileType,
+      convertors,
+    });
+
+    // Extract base path for summary
+    if (!basePath) {
+      basePath = path.dirname(componentPath);
+    }
+
+    // Resolve final content (used for both writing and dry-run preview).
+    let processedTemplate = applyConvertors(template, convertors);
+
+    // Make sure the component does not already exist in the path directory.
+
+    if (existsSync(componentPath)) {
+      generatedFiles.push({ filename, status: 'skipped', path: componentPath, content: processedTemplate });
+      continue;
+    }
+
+    try {
+      if (!cmd.dryRun) {
+        // Format on generate (best-effort, uses the project's Prettier when available).
+        processedTemplate = await formatContent(processedTemplate, componentPath);
+        outputFileSync(componentPath, processedTemplate);
+      }
+
+      generatedFiles.push({ filename, status: 'created', path: componentPath, content: processedTemplate });
+    } catch (err) {
+      generatedFiles.push({ filename, status: 'failed', path: componentPath });
+      error(`Failed to create ${filename}`, {
+        details: err.message,
+        suggestions: [
+          'Check that you have write permissions to the target directory',
+          'Verify the path is valid',
+        ],
+      });
+    }
+  }
 
   // Show summary
   fileSummary(generatedFiles, basePath, { dryRun: cmd.dryRun });
+
+  return generatedFiles;
 }

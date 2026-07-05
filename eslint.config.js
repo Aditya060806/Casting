@@ -6,6 +6,9 @@ export default antfu({
   react: false,
   typescript: false,
 
+  // Don't lint code samples inside markdown docs (READMEs use illustrative snippets)
+  markdown: false,
+
   // Style preferences
   stylistic: {
     indent: 2,

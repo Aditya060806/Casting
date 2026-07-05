@@ -67,6 +67,31 @@ export function info(message) {
   console.log(`${symbols.info} ${chalk.cyan(message)}`);
 }
 
+// Dim message (secondary/hint text)
+export function dim(message) {
+  console.log(chalk.dim(message));
+}
+
+// Render a "new file" diff-style preview (used by --dry-run)
+export function filePreview(filename, content) {
+  const MAX_PREVIEW_LINES = 40;
+  console.log();
+  console.log(`${chalk.dim('┌─')} ${chalk.bold(filename)}`);
+
+  const lines = String(content).split('\n');
+  const shown = lines.slice(0, MAX_PREVIEW_LINES);
+
+  shown.forEach((line) => {
+    console.log(`${chalk.dim('│')} ${chalk.green(`+ ${line}`)}`);
+  });
+
+  if (lines.length > MAX_PREVIEW_LINES) {
+    console.log(`${chalk.dim('│')} ${chalk.dim(`… ${lines.length - MAX_PREVIEW_LINES} more lines`)}`);
+  }
+
+  console.log(chalk.dim('└─'));
+}
+
 // Header for sections (like config setup intro)
 export function header(title, subtitle) {
   console.log();
@@ -97,6 +122,13 @@ export function fileSummary(files, basePath, { dryRun = false } = {}) {
         const isLast = index === createdFiles.length - 1 && skippedFiles.length === 0;
         const prefix = isLast ? '└──' : '├──';
         console.log(`  ${chalk.dim(prefix)} ${file.filename}`);
+      });
+
+      // Show a green, diff-style preview of the content that would be written.
+      createdFiles.forEach((file) => {
+        if (file.content != null) {
+          filePreview(file.filename, file.content);
+        }
       });
     }
 

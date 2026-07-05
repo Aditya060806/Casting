@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/Aditya060806/Harvest/main/schema/casting.schema.json",
+  "title": "Casting configuration",
+  "description": "Configuration for the Casting React CLI (casting.json).",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON schema reference for editor autocomplete and validation."
+    },
+    "usesTypeScript": {
+      "type": "boolean",
+      "description": "Generate TypeScript (.tsx/.ts) files instead of JavaScript."
+    },
+    "usesStyledComponents": {
+      "type": "boolean",
+      "description": "Use styled-components for styling instead of stylesheet files."
+    },
+    "usesCssModule": {
+      "type": "boolean",
+      "description": "Generate CSS modules (*.module.*) stylesheets."
+    },
+    "cssPreprocessor": {
+      "type": "string",
+      "enum": [
+        "css",
+        "scss",
+        "less",
+        "styl"
+      ],
+      "description": "Stylesheet language/extension to use."
+    },
+    "testLibrary": {
+      "type": "string",
+      "enum": [
+        "Testing Library",
+        "Vitest",
+        "None"
+      ],
+      "description": "Testing library used for generated test files."
+    },
+    "framework": {
+      "type": "string",
+      "enum": [
+        "react",
+        "vite",
+        "next"
+      ],
+      "description": "Detected framework. Enables framework-specific behavior."
+    },
+    "customDirectory": {
+      "type": "string",
+      "description": "Global cased directory-name template applied to generated components."
+    },
+    "component": {
+      "type": "object",
+      "description": "Component types. The default type is required; add your own named types.",
+      "additionalProperties": {
+        "$ref": "#/definitions/componentType"
+      }
+    },
+    "hook": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "$ref": "#/definitions/simpleGenerator"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/simpleGenerator"
+      }
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "$ref": "#/definitions/contextGenerator"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/contextGenerator"
+      }
+    }
+  },
+  "definitions": {
+    "customTemplates": {
+      "type": "object",
+      "description": "Paths to custom templates keyed by file type.",
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "test": {
+          "type": "string"
+        },
+        "story": {
+          "type": "string"
+        },
+        "lazy": {
+          "type": "string"
+        },
+        "index": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "componentType": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Output directory for this component type."
+        },
+        "withStyle": {
+          "type": "boolean"
+        },
+        "withTest": {
+          "type": "boolean"
+        },
+        "withStory": {
+          "type": "boolean"
+        },
+        "withLazy": {
+          "type": "boolean"
+        },
+        "withIndex": {
+          "type": "boolean",
+          "description": "Generate a barrel index file."
+        },
+        "flat": {
+          "type": "boolean",
+          "description": "Generate files directly in path without a folder."
+        },
+        "customDirectory": {
+          "type": "string"
+        },
+        "customTemplates": {
+          "$ref": "#/definitions/customTemplates"
+        }
+      },
+      "additionalProperties": true
+    },
+    "simpleGenerator": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "flat": {
+          "type": "boolean"
+        },
+        "withTest": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "contextGenerator": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "flat": {
+          "type": "boolean"
+        },
+        "withTest": {
+          "type": "boolean"
+        },
+        "client": {
+          "type": "boolean",
+          "description": "Prepend the use client directive."
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

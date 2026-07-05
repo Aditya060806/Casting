@@ -1,27 +1,31 @@
 {
-  "name": "casting",
-  "version": "11.0.4",
-  "description": "A simple React CLI to generate components instantly and more.",
+  "name": "casting-cli",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A fast, zero-config React CLI to generate components, hooks, and contexts instantly.",
   "author": "Aditya Pandey",
   "license": "MIT",
-  "repository": "https://github.com/Aditya060806/Casting",
-  "bugs": "https://github.com/Aditya060806/Casting/issues",
+  "repository": "https://github.com/Aditya060806/Harvest",
+  "bugs": "https://github.com/Aditya060806/Harvest/issues",
   "keywords": [
     "cli",
     "react",
     "build-tools",
-    "casting"
+    "component-generator",
+    "scaffolding",
+    "casting",
+    "casting-cli"
   ],
   "main": "bin/casting",
   "bin": {
     "casting": "bin/casting.js"
   },
-  "type": "module",
   "files": [
     "CHANGELOG.md",
     "LICENSE",
     "README.md",
     "bin/",
+    "schema/",
     "src/"
   ],
   "publishConfig": {
@@ -37,7 +41,10 @@
   "scripts": {
     "prepare": "husky",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "chalk": "5.6.2",
@@ -58,7 +65,8 @@
     "eslint": "10.2.0",
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
-    "semantic-release": "25.0.3"
+    "semantic-release": "25.0.3",
+    "vitest": "2.1.9"
   },
   "lint-staged": {
     "*.js": "eslint --fix"

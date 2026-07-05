@@ -6,8 +6,11 @@
 # build directory
 /dist
 
-# jest test coverage
+# test coverage
 /coverage
+
+# local scratch/sandbox for manual CLI testing
+/.sandbox
 
 # ide
 .idea

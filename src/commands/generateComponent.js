@@ -1,8 +1,26 @@
+import inquirer from 'inquirer';
+import { WHITESPACE_REGEX } from '../utils/constants.js';
 import {
   generateComponent,
   getComponentByType,
   getCorrespondingComponentFileTypes,
 } from '../utils/generateComponentUtils.js';
+
+const { prompt } = inquirer;
+
+// Prompt for one or more component names when none are passed on the CLI.
+async function promptForComponentNames() {
+  const { names } = await prompt([
+    {
+      type: 'input',
+      name: 'names',
+      message: 'What is the name of your component? (separate multiple with spaces)',
+      validate: value => (value && value.trim().length > 0) || 'Please enter at least one name.',
+    },
+  ]);
+
+  return names.trim().split(WHITESPACE_REGEX);
+}
 
 export default function initGenerateComponentCommand(args, cliConfigFile, program) {
   const selectedComponentType = getComponentByType(args, cliConfigFile);
@@ -10,6 +28,7 @@ export default function initGenerateComponentCommand(args, cliConfigFile, progra
   const componentCommand = program
     .command('component [names...]')
     .alias('c')
+    .description('Generate a React component with its corresponding files.')
 
   // Static component command option defaults.
 
@@ -24,7 +43,8 @@ export default function initGenerateComponentCommand(args, cliConfigFile, progra
       'Generate the files in the mentioned path instead of creating new folder for it',
       selectedComponentType.flat || false,
     )
-    .option('--dry-run', 'Show what will be generated without writing to disk')
+    .option('--dry-run', 'Show what will be generated (with a preview) without writing to disk')
+    .option('-y, --yes', 'Skip interactive prompts and use detected/config defaults')
     .option(
       '--customDirectory <customDirectory>',
       'You can pass a cased path template that will be used as the component path for the component being generated.\n'
@@ -50,7 +70,19 @@ export default function initGenerateComponentCommand(args, cliConfigFile, progra
 
   // Component command action.
 
-  componentCommand.action((componentNames, cmd) =>
-    componentNames.forEach(componentName => generateComponent(componentName, cmd, cliConfigFile)),
-  );
+  componentCommand.action(async (componentNames, cmd) => {
+    let names = componentNames;
+
+    if ((!names || names.length === 0) && !cmd.yes) {
+      names = await promptForComponentNames();
+    }
+
+    if (!names || names.length === 0) {
+      return;
+    }
+
+    for (const componentName of names) {
+      await generateComponent(componentName, cmd, cliConfigFile);
+    }
+  });
 }
