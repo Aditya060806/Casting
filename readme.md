@@ -1,16 +1,21 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Aditya060806/Casting/main/docs/assets/casting.svg?raw=true" alt="Casting" width="140" />
+<img src="https://raw.githubusercontent.com/Aditya060806/Casting/main/docs/assets/casting.svg?raw=true" alt="Casting" width="150" />
 
 # Casting
 
-### Generate React components, hooks, and contexts in seconds — zero config, fully typed, auto-formatted.
+**Generate React components, hooks, and contexts in seconds — zero config, fully typed, auto-formatted.**
 
-[![npm version](https://img.shields.io/npm/v/casting-cli.svg?color=%230b7285&label=casting-cli)](https://www.npmjs.com/package/casting-cli)
-[![npm downloads](https://img.shields.io/npm/dm/casting-cli.svg?color=%232f9e44)](https://www.npmjs.com/package/casting-cli)
+[![npm version](https://img.shields.io/npm/v/casting-cli.svg?color=0b7285&label=casting-cli&logo=npm)](https://www.npmjs.com/package/casting-cli)
+[![npm downloads](https://img.shields.io/npm/dm/casting-cli.svg?color=2f9e44&logo=npm)](https://www.npmjs.com/package/casting-cli)
 [![CI](https://github.com/Aditya060806/Casting/actions/workflows/ci.yml/badge.svg)](https://github.com/Aditya060806/Casting/actions/workflows/ci.yml)
-[![Node](https://img.shields.io/node/v/casting-cli.svg?color=%23339af0)](https://nodejs.org)
-[![License: MIT](https://img.shields.io/npm/l/casting-cli.svg?color=%23845ef7)](https://github.com/Aditya060806/Casting/blob/main/LICENSE)
+[![Node](https://img.shields.io/node/v/casting-cli.svg?color=339af0&logo=node.js)](https://nodejs.org)
+[![License: MIT](https://img.shields.io/npm/l/casting-cli.svg?color=845ef7)](https://github.com/Aditya060806/Casting/blob/main/LICENSE)
+
+<br/>
+
+*Stop hand-writing the same folder, component, style, and test files over and over.*
+*Casting reads your stack and scaffolds files that already match your conventions.*
 
 ```bash
 npx casting-cli component Box
@@ -20,16 +25,35 @@ npx casting-cli component Box
 
 ---
 
-Casting is a fast, **zero-config** command-line tool that scaffolds the boilerplate you write every day. It reads your project once, figures out your stack (TypeScript, styling, test runner, framework), and generates files that already match your conventions — then runs them through your Prettier config so they look hand-written.
+## ⚡ 30-second demo
 
-> Built by **Aditya Pandey**.
+```console
+$ npx casting-cli component Box
+
+✓ Created 3 files in src/components/Box
+  ├── ✓ Box.tsx
+  ├── ✓ Box.module.css
+  └── ✓ Box.test.tsx
+```
+
+That single command detected TypeScript + CSS Modules from your project, created the folder, and wrote a component, a scoped stylesheet, and a matching test — already formatted with your Prettier config.
+
+## Why Casting?
+
+- 🧠 **It reads your project, so you don't answer questions.** TypeScript? styled-components? Vitest? Next.js? Casting figures it out.
+- ⚡ **One command, a whole feature.** Folder + component + style + test + barrel index, consistently named.
+- 🧩 **More than components.** First-class generators for **hooks** and **contexts** too.
+- 🎨 **Output looks hand-written.** Every file runs through your Prettier config.
+- 🔍 **No surprises.** `--dry-run` shows a colored diff before touching disk.
+- 🪶 **Tiny & fast.** ~23 kB install, no framework lock-in, runs on plain Node.
 
 ## Table of Contents
 
-- [Highlights](#highlights)
+- [Features](#features)
 - [How It Compares](#how-it-compares)
 - [Efficiency](#efficiency)
 - [How It Works](#how-it-works)
+- [What Casting Detects](#what-casting-detects)
 - [Quick Start](#quick-start)
 - [Requirements](#requirements)
 - [Config File](#config-file)
@@ -44,11 +68,12 @@ Casting is a fast, **zero-config** command-line tool that scaffolds the boilerpl
 - [Custom Templates](#custom-templates)
 - [Template Keywords](#template-keywords)
 - [Barrel / Index Files](#barrel--index-files)
+- [Roadmap](#roadmap)
 - [FAQ](#faq)
 - [Contributing](#contributing)
 - [License](#license)
 
-## Highlights
+## Features
 
 | | Feature | What it means |
 |---|---------|---------------|
@@ -60,10 +85,12 @@ Casting is a fast, **zero-config** command-line tool that scaffolds the boilerpl
 | 🎛️ | **Interactive mode** | Run `casting` bare for an arrow-key menu. |
 | 🧠 | **Typed config** | `casting.json` ships a JSON schema for editor autocomplete + validation. |
 | 🧵 | **Next.js aware** | Adds the `'use client'` directive to contexts automatically. |
+| 🧱 | **Custom templates & types** | Bring your own templates and define unlimited component types. |
+| 🏷️ | **7 name casings** | `TemplateName`, `template-name`, `TEMPLATE_NAME`, and more — in files and content. |
 
 ## How It Compares
 
-Casting focuses on doing the common React scaffolding tasks **out of the box**, without asking you to write template files first.
+Casting focuses on doing common React scaffolding **out of the box**, without asking you to write template files first.
 
 | Capability | **Casting** | generate-react-cli | Plop | Hygen | Hand-written |
 |---|:---:|:---:|:---:|:---:|:---:|
@@ -79,57 +106,91 @@ Casting focuses on doing the common React scaffolding tasks **out of the box**, 
 | Custom templates | ✅ | ✅ | ✅ | ✅ | — |
 | Built-in **barrel/index** file | ✅ | ⚠️ template | ❌ | ❌ | ✍️ |
 | Config **JSON schema** | ✅ | ❌ | ❌ | ❌ | — |
+| Next.js `'use client'` awareness | ✅ | ❌ | ❌ | ❌ | ✍️ |
 
 <sub>✅ built-in · ⚠️ partial / needs config · ❌ not supported · ✍️ do it yourself · ¹ generic scaffolders can do this only after you author template files.</sub>
 
 ## Efficiency
 
-A typical **TypeScript component with a stylesheet, test, and barrel file** is 4 files and ~40 lines of boilerplate. Here's the difference (illustrative, based on a component of this size):
+A typical **TypeScript component with a stylesheet, test, and barrel file** is 4 files and ~40 lines of boilerplate. Here is the shape of the savings (illustrative estimates for a component of this size — not audited benchmarks).
 
-**Time to first working component**
+### Time to first working component
 
-```text
-Hand-written   ████████████████████████████████████████  ~90s
-Plop/Hygen*    ████████████████                          ~35s   (* after templates exist)
-Casting        ██                                        ~4s
+```mermaid
+---
+config:
+  xyChart:
+    width: 720
+    height: 260
+---
+xychart-beta
+    title "Seconds to first component (lower is better)"
+    x-axis ["Hand-written", "Plop / Hygen*", "Casting"]
+    y-axis "Seconds" 0 --> 100
+    bar [90, 35, 4]
 ```
 
-**What you type vs. what you get**
+<sub>* Plop / Hygen require you to author template files first; the ~35s reflects usage once templates already exist.</sub>
+
+### What you type vs. what you get
 
 ```text
-You type:   casting c Box            (15 characters)
+You type:   casting c Box                       (15 characters)
 You get:    Box.tsx  Box.module.css  Box.test.tsx  index.ts
-            ~45 lines, formatted, consistently named  ── ≈300:1 leverage
+            ~45 lines · formatted · consistently named   ──►  ≈300× leverage
 ```
 
-**Files produced per single command**
+### Savings at scale
 
-| Command | Files generated |
-|---|:---:|
-| `casting c Box` | 1 |
-| `casting c Box --withStyle --withTest` | 3 |
-| `casting c Box` *(style + test + index in config)* | 4 |
-| `casting c Box Card Modal` | 3 × per-name |
-| `casting ctx Theme` | 2 (context + test) |
+| Components generated | Hand-written (~90s each) | Casting (~4s each) | Time saved |
+|---|:---:|:---:|:---:|
+| 10 | ~15 min | ~40 s | **~14 min** |
+| 50 | ~75 min | ~3.5 min | **~71 min** |
+| 200 | ~5 hrs | ~13 min | **~4.7 hrs** |
 
-> These figures are illustrative estimates to show the shape of the savings, not audited benchmarks. Your mileage depends on file count and machine speed. The point stands: **one short command replaces dozens of manual keystrokes and naming decisions.**
+> Figures are illustrative to show the trend, not measured benchmarks — your mileage varies with file count and machine speed. The point stands: **one short command replaces dozens of keystrokes and naming decisions.**
 
 ## How It Works
 
 ```mermaid
 flowchart LR
-    A[casting c Box] --> B{casting.json exists?}
-    B -- no --> C[Auto-detect project<br/>TS · styling · test lib · framework]
-    C --> D[Write casting.json]
-    B -- yes --> E[Load config]
+    A["casting c Box"] --> B{"casting.json<br/>exists?"}
+    B -- no --> C["Auto-detect project<br/>TS · styling · test lib · framework"]
+    C --> D["Write casting.json"]
+    B -- yes --> E["Load config"]
     D --> E
-    E --> F[Pick templates<br/>built-in or custom]
-    F --> G[Replace TemplateName keywords]
-    G --> H{dry-run?}
-    H -- yes --> I[Show colored diff preview]
-    H -- no --> J[Format with Prettier]
-    J --> K[Write files + summary]
+    E --> F["Pick templates<br/>built-in or custom"]
+    F --> G["Replace TemplateName<br/>keywords (7 casings)"]
+    G --> H{"--dry-run?"}
+    H -- yes --> I["Show colored diff preview"]
+    H -- no --> J["Format with Prettier"]
+    J --> K["Write files + print summary"]
 ```
+
+Under the hood, every run is a small, predictable pipeline:
+
+1. **Locate** — confirm you're at the project root (`package.json` present).
+2. **Configure** — load `casting.json`, or create it by auto-detecting your stack on first run.
+3. **Resolve templates** — use built-in templates, or your `customTemplates` overrides.
+4. **Transform** — swap the `TemplateName` keyword family into your chosen name, in every casing.
+5. **Format** — run the result through your project's Prettier (best-effort, skipped if absent).
+6. **Emit** — write files (existing files are skipped, never overwritten) and print a summary.
+
+## What Casting Detects
+
+On first run (or `casting init --auto`), Casting maps your project's signals to config — no questions needed:
+
+| Signal in your project | Casting sets |
+|---|---|
+| `tsconfig.json` or `typescript` dependency | `usesTypeScript: true` → `.tsx`/`.ts` output |
+| `styled-components` dependency | `usesStyledComponents: true` |
+| `sass` / `node-sass` | `cssPreprocessor: "scss"` |
+| `less` | `cssPreprocessor: "less"` |
+| `stylus` | `cssPreprocessor: "styl"` |
+| `vitest` | `testLibrary: "Vitest"` |
+| `@testing-library/react` | `testLibrary: "Testing Library"` |
+| `next` | `framework: "next"` → contexts get `'use client'` |
+| `vite` | `framework: "vite"` |
 
 ## Quick Start
 
@@ -226,6 +287,23 @@ src/
         └── Box.test.tsx
 ```
 
+Example output (`Box.tsx`, TypeScript + CSS Modules detected):
+
+```tsx
+import type { FC } from 'react';
+import styles from './Box.module.css';
+
+interface BoxProps {}
+
+const Box: FC<BoxProps> = () => (
+  <div className={styles.Box} data-testid="Box">
+    Box Component
+  </div>
+);
+
+export default Box;
+```
+
 Generate several at once:
 
 ```sh
@@ -302,6 +380,13 @@ Run Casting with no arguments to pick a generator, name it, and toggle files wit
 
 ```sh
 npx casting-cli
+```
+
+```console
+? Pick a generator › (Use arrow keys)
+❯ Component
+  Hook
+  Context (Provider + hook)
 ```
 
 ## Dry-Run Preview
@@ -433,6 +518,15 @@ export { default } from './Box';
 
 Provide `customTemplates.index` to use your own barrel template.
 
+## Roadmap
+
+Ideas on the table (contributions welcome):
+
+- Next.js `page.tsx` / `layout.tsx` generators
+- State-slice generators (Zustand / Redux Toolkit)
+- Auto-update of the parent barrel `index.ts` on generate
+- A VS Code extension with right-click "Generate component"
+
 ## FAQ
 
 **Does it overwrite existing files?**
@@ -446,6 +540,9 @@ Yes. Casting detects the absence of TypeScript and emits `.js`/`.jsx`.
 
 **Why is the package `casting-cli` but the command `casting`?**
 The npm package is `casting-cli`; the installed executable is `casting`. Use `npx casting-cli …` or, after a global install, just `casting …`.
+
+**Is my `casting.json` validated?**
+Yes — the bundled JSON schema gives you autocomplete and inline validation in editors like VS Code.
 
 ## Contributing
 
@@ -461,4 +558,4 @@ Issues and PRs are welcome at [Aditya060806/Casting](https://github.com/Aditya06
 
 ## License
 
-Casting is open source software [licensed as MIT](https://github.com/Aditya060806/Casting/blob/main/LICENSE).
+Casting is open source software [licensed as MIT](https://github.com/Aditya060806/Casting/blob/main/LICENSE), built by **Aditya Pandey**.
