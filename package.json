@@ -5,7 +5,10 @@
   "description": "A fast, zero-config React CLI to generate components, hooks, and contexts instantly.",
   "author": "Aditya Pandey",
   "license": "MIT",
-  "repository": "https://github.com/Aditya060806/Casting",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aditya060806/Casting.git"
+  },
   "bugs": "https://github.com/Aditya060806/Casting/issues",
   "keywords": [
     "cli",
