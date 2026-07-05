@@ -30,6 +30,28 @@
     }));
   }
 
+  /* ---- Theme toggle ---- */
+  const root = document.documentElement;
+  const themeToggle = $('#themeToggle');
+  const getTheme = () => (root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const next = getTheme() === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      themeToggle.setAttribute('aria-label', next === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+      try { localStorage.setItem('casting-theme', next); } catch (e) { /* ignore */ }
+    });
+  }
+  // Follow system changes only when the user hasn't picked a theme.
+  const mq = window.matchMedia('(prefers-color-scheme: light)');
+  mq.addEventListener('change', (e) => {
+    let stored = null;
+    try { stored = localStorage.getItem('casting-theme'); } catch (err) { /* ignore */ }
+    if (stored !== 'light' && stored !== 'dark') {
+      root.setAttribute('data-theme', e.matches ? 'light' : 'dark');
+    }
+  });
+
   /* ---- Reveal on scroll ---- */
   const revealEls = $$('.reveal');
   if (reduceMotion) {
