@@ -1,0 +1,22 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# build directory
+/dist
+
+# jest test coverage
+/coverage
+
+# ide
+.idea
+
+# Claude AI context file
+**/CLAUDE.md
+
+# VSCode
+.vscode
+
+# Zed
+.zed
