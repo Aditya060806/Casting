@@ -1,7 +1,7 @@
 {
   "name": "casting-cli",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A fast, zero-config React CLI to generate components, hooks, and contexts instantly.",
   "author": "Aditya Pandey",
   "license": "MIT",
@@ -29,7 +29,9 @@
     "README.md",
     "bin/",
     "schema/",
-    "src/"
+    "src/",
+    "!src/**/*.test.js",
+    "!vitest.config.js"
   ],
   "publishConfig": {
     "access": "public"

@@ -11,6 +11,7 @@
 
 # local scratch/sandbox for manual CLI testing
 /.sandbox
+/.smoke
 
 # ide
 .idea
