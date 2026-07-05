@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Aditya060806/Casting/main/docs/assets/casting.svg?raw=true" alt="Casting" width="150" />
-
 # Casting
 
 **Generate React components, hooks, and contexts in seconds — zero config, fully typed, auto-formatted.**
