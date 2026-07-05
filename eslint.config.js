@@ -29,4 +29,11 @@ export default antfu({
     'node/prefer-global/process': 'off', // process is always available in Node.js
     'style/brace-style': ['error', '1tbs', { allowSingleLine: true }],
   },
+}, {
+  // The `files` allowlist keeps `!` negations last so npm excludes test files
+  // correctly; that intentionally conflicts with alphabetical array sorting.
+  files: ['**/package.json'],
+  rules: {
+    'jsonc/sort-array-values': 'off',
+  },
 });
