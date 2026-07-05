@@ -21,6 +21,7 @@ export default antfu({
     'node_modules',
     'dist',
     'coverage',
+    'website',
   ],
 
   // Rule overrides

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casting — Scaffold React at the speed of thought</title>
+  <meta name="description" content="Casting is a fast, zero-config React CLI that generates components, hooks, and contexts in seconds — fully typed, auto-formatted, and matched to your stack." />
+  <meta name="author" content="Aditya Pandey" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Casting — Scaffold React at the speed of thought" />
+  <meta property="og:description" content="Generate React components, hooks, and contexts in seconds. Zero-config, fully typed, auto-formatted." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://github.com/Aditya060806/Casting" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="glow glow-1" aria-hidden="true"></div>
+  <div class="glow glow-2" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="#top" class="brand" aria-label="Casting home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="M3 12l9 5 9-5" /><path d="M3 16l9 5 9-5" />
+        </svg>
+      </span>
+      <span class="brand-name">Casting</span>
+      <span class="brand-badge">v1.0.3</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#compare">Compare</a>
+      <a href="#docs">Docs</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a class="icon-link" href="https://www.npmjs.com/package/casting-cli" target="_blank" rel="noopener" aria-label="npm package">npm</a>
+      <a class="btn btn-ghost" href="https://github.com/Aditya060806/Casting" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#compare">Compare</a>
+    <a href="#docs">Docs</a>
+    <a href="https://www.npmjs.com/package/casting-cli" target="_blank" rel="noopener">npm</a>
+    <a href="https://github.com/Aditya060806/Casting" target="_blank" rel="noopener">GitHub</a>
+  </div>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-pill reveal">
+        <span class="pulse"></span> Zero-config React scaffolding
+      </div>
+      <h1 class="hero-title reveal">CASTING</h1>
+      <p class="hero-tagline reveal">Scaffold React at the speed of thought.</p>
+      <p class="hero-sub reveal">
+        Generate components, hooks, and contexts in seconds — Casting reads your stack
+        and produces files that are fully typed, auto-formatted, and match your conventions.
+      </p>
+
+      <div class="install reveal" data-copy="npx casting-cli component Box">
+        <span class="prompt">$</span>
+        <code>npx casting-cli component Box</code>
+        <button class="copy-btn" aria-label="Copy install command">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        </button>
+      </div>
+
+      <div class="hero-actions reveal">
+        <a class="btn btn-primary" href="#docs">Get started
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://www.npmjs.com/package/casting-cli" target="_blank" rel="noopener">View on npm</a>
+      </div>
+
+      <div class="scroll-hint reveal" aria-hidden="true">
+        <span>EXPLORE</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats reveal">
+      <div class="stat"><span class="stat-num" data-count="3">0</span><span class="stat-label">Generators</span></div>
+      <div class="stat"><span class="stat-num" data-count="7">0</span><span class="stat-label">Name casings</span></div>
+      <div class="stat"><span class="stat-num" data-count="4" data-suffix="s">0</span><span class="stat-label">To first component</span></div>
+      <div class="stat"><span class="stat-num" data-count="0">0</span><span class="stat-label">Config required</span></div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="section-head reveal">
+        <span class="eyebrow">Features</span>
+        <h2>Everything you need, nothing you don't.</h2>
+        <p>Casting handles the boilerplate so you can focus on the interesting parts.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card reveal">
+          <div class="feature-ico">🪄</div>
+          <h3>Zero-config auto-detect</h3>
+          <p>Reads <code>package.json</code> and <code>tsconfig.json</code> to infer TypeScript, styling, test library, and framework.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-ico">⚡</div>
+          <h3>One-command scaffolding</h3>
+          <p><code>casting c Box</code> creates the folder, component, style, test, and barrel file at once.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-ico">🧩</div>
+          <h3>Three generators</h3>
+          <p>Components, custom hooks, and contexts with a Provider and a typed consumer hook.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-ico">🎨</div>
+          <h3>Format on generate</h3>
+          <p>Output is piped through your project's Prettier config so it looks hand-written.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-ico">🔍</div>
+          <h3>Dry-run diff preview</h3>
+          <p>See a colored, line-by-line preview of every file before anything touches disk.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-ico">🎛️</div>
+          <h3>Interactive mode</h3>
+          <p>Run <code>casting</code> with no arguments for an arrow-key menu.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-ico">🧠</div>
+          <h3>Typed config</h3>
+          <p><code>casting.json</code> ships a JSON schema for editor autocomplete and validation.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="feature-ico">🧵</div>
+          <h3>Next.js aware</h3>
+          <p>Adds the <code>'use client'</code> directive to contexts automatically when it detects Next.js.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- TERMINAL DEMO -->
+    <section class="section" id="demo">
+      <div class="section-head reveal">
+        <span class="eyebrow">See it run</span>
+        <h2>One command. A whole feature.</h2>
+        <p>Casting detected TypeScript + CSS Modules, then generated a formatted component, style, and test.</p>
+      </div>
+
+      <div class="terminal reveal" id="terminal">
+        <div class="terminal-bar">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="terminal-title">zsh — casting</span>
+        </div>
+        <pre class="terminal-body" id="terminalBody"></pre>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" id="how">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>A small, predictable pipeline.</h2>
+        <p>Every run follows the same six steps — from your command to formatted files on disk.</p>
+      </div>
+
+      <ol class="pipeline">
+        <li class="reveal"><span class="step-n">1</span><h4>Locate</h4><p>Confirms you're at the project root.</p></li>
+        <li class="reveal"><span class="step-n">2</span><h4>Configure</h4><p>Loads <code>casting.json</code>, or auto-detects your stack on first run.</p></li>
+        <li class="reveal"><span class="step-n">3</span><h4>Resolve</h4><p>Picks built-in templates or your custom overrides.</p></li>
+        <li class="reveal"><span class="step-n">4</span><h4>Transform</h4><p>Swaps the <code>TemplateName</code> keyword into 7 casings.</p></li>
+        <li class="reveal"><span class="step-n">5</span><h4>Format</h4><p>Runs the result through your Prettier config.</p></li>
+        <li class="reveal"><span class="step-n">6</span><h4>Emit</h4><p>Writes files (never overwrites) and prints a summary.</p></li>
+      </ol>
+    </section>
+
+    <!-- COMPARE -->
+    <section class="section" id="compare">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it compares</span>
+        <h2>Built-in where others make you build.</h2>
+        <p>Casting does common React scaffolding out of the box — no template authoring required.</p>
+      </div>
+
+      <div class="table-wrap reveal">
+        <table class="compare">
+          <thead>
+            <tr><th>Capability</th><th class="hi">Casting</th><th>generate-react-cli</th><th>Plop</th><th>Hygen</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Works with zero setup</td><td class="hi yes">✓</td><td class="warn">~</td><td class="no">✕</td><td class="no">✕</td></tr>
+            <tr><td>Auto-detects your stack</td><td class="hi yes">✓</td><td class="warn">~</td><td class="no">✕</td><td class="no">✕</td></tr>
+            <tr><td>Hook generator</td><td class="hi yes">✓</td><td class="no">✕</td><td class="warn">~</td><td class="warn">~</td></tr>
+            <tr><td>Context (Provider + hook)</td><td class="hi yes">✓</td><td class="no">✕</td><td class="warn">~</td><td class="warn">~</td></tr>
+            <tr><td>Format on generate (Prettier)</td><td class="hi yes">✓</td><td class="no">✕</td><td class="no">✕</td><td class="no">✕</td></tr>
+            <tr><td>Dry-run diff preview</td><td class="hi yes">✓</td><td class="warn">~</td><td class="no">✕</td><td class="no">✕</td></tr>
+            <tr><td>Built-in barrel/index file</td><td class="hi yes">✓</td><td class="warn">~</td><td class="no">✕</td><td class="no">✕</td></tr>
+            <tr><td>Config JSON schema</td><td class="hi yes">✓</td><td class="no">✕</td><td class="no">✕</td><td class="no">✕</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fineprint reveal">✓ built-in · ~ partial / needs config · ✕ not supported. Generic scaffolders can match many rows only after you author template files.</p>
+    </section>
+
+    <!-- EFFICIENCY -->
+    <section class="section" id="efficiency">
+      <div class="section-head reveal">
+        <span class="eyebrow">Efficiency</span>
+        <h2>Seconds, not minutes.</h2>
+        <p>Time to a working TypeScript component with a style, test, and barrel file (illustrative).</p>
+      </div>
+
+      <div class="bars reveal">
+        <div class="bar-row"><span class="bar-label">Hand-written</span><div class="bar-track"><div class="bar-fill" data-pct="100"></div></div><span class="bar-val">~90s</span></div>
+        <div class="bar-row"><span class="bar-label">Plop / Hygen*</span><div class="bar-track"><div class="bar-fill" data-pct="39"></div></div><span class="bar-val">~35s</span></div>
+        <div class="bar-row"><span class="bar-label">Casting</span><div class="bar-track"><div class="bar-fill accent" data-pct="5"></div></div><span class="bar-val">~4s</span></div>
+      </div>
+      <p class="fineprint reveal">* Plop / Hygen require you to author templates first. Figures are illustrative, not audited benchmarks.</p>
+    </section>
+
+    <!-- DOCS -->
+    <section class="section" id="docs">
+      <div class="section-head reveal">
+        <span class="eyebrow">Documentation</span>
+        <h2>Get productive in a minute.</h2>
+        <p>Install, generate, and configure. Everything you need is right here.</p>
+      </div>
+
+      <div class="tabs reveal" id="tabs">
+        <div class="tab-list" role="tablist">
+          <button class="tab active" data-tab="install" role="tab">Install</button>
+          <button class="tab" data-tab="components" role="tab">Components</button>
+          <button class="tab" data-tab="hooks" role="tab">Hooks</button>
+          <button class="tab" data-tab="contexts" role="tab">Contexts</button>
+          <button class="tab" data-tab="config" role="tab">Config</button>
+          <button class="tab" data-tab="options" role="tab">Options</button>
+        </div>
+
+        <div class="tab-panels">
+          <div class="tab-panel active" data-panel="install">
+            <p>Global install (the executable is <code>casting</code>):</p>
+            <div class="code-block" data-lang="bash"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>npm i -g casting-cli
+casting component Button</code></pre></div>
+            <p>Or run it on demand with <code>npx</code>:</p>
+            <div class="code-block" data-lang="bash"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>npx casting-cli init --auto
+npx casting-cli component Box</code></pre></div>
+            <p class="note">Requires Node.js 22+ and npm 10+.</p>
+          </div>
+
+          <div class="tab-panel" data-panel="components">
+            <p>Generate one — or several — components at once:</p>
+            <div class="code-block" data-lang="bash"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>casting component Box
+casting component Box Card Modal</code></pre></div>
+            <div class="code-block" data-lang="tsx"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>import type { FC } from 'react';
+import styles from './Box.module.css';
+
+interface BoxProps {}
+
+const Box: FC&lt;BoxProps&gt; = () =&gt; (
+  &lt;div className={styles.Box} data-testid="Box"&gt;
+    Box Component
+  &lt;/div&gt;
+);
+
+export default Box;</code></pre></div>
+          </div>
+
+          <div class="tab-panel" data-panel="hooks">
+            <p>Scaffold a custom hook and its test:</p>
+            <div class="code-block" data-lang="bash"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>casting hook useToggle</code></pre></div>
+            <div class="code-block" data-lang="ts"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>import { useCallback, useState } from 'react';
+
+export function useToggle() {
+  const [value, setValue] = useState&lt;unknown&gt;(null);
+  const reset = useCallback(() =&gt; setValue(null), []);
+  return { value, setValue, reset } as const;
+}</code></pre></div>
+          </div>
+
+          <div class="tab-panel" data-panel="contexts">
+            <p>Generate a context with a Provider and a typed consumer hook:</p>
+            <div class="code-block" data-lang="bash"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>casting context Theme
+casting context Theme --client   # prepends 'use client'</code></pre></div>
+            <div class="code-block" data-lang="tsx"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>export function useTheme() {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+}</code></pre></div>
+          </div>
+
+          <div class="tab-panel" data-panel="config">
+            <p>Create the config by auto-detecting your stack:</p>
+            <div class="code-block" data-lang="bash"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>casting init --auto</code></pre></div>
+            <div class="code-block" data-lang="json"><button class="copy-btn code-copy" aria-label="Copy"></button><pre><code>{
+  "usesTypeScript": true,
+  "usesCssModule": true,
+  "cssPreprocessor": "scss",
+  "testLibrary": "Testing Library",
+  "component": {
+    "default": {
+      "path": "src/components",
+      "withStyle": true,
+      "withTest": true,
+      "withIndex": false
+    }
+  }
+}</code></pre></div>
+          </div>
+
+          <div class="tab-panel" data-panel="options">
+            <div class="opts">
+              <div class="opt"><code>--dry-run</code><span>Preview with a colored diff, write nothing</span></div>
+              <div class="opt"><code>-f, --flat</code><span>Generate files directly in path (no folder)</span></div>
+              <div class="opt"><code>-y, --yes</code><span>Skip prompts, use detected defaults</span></div>
+              <div class="opt"><code>-p, --path</code><span>Override the output directory</span></div>
+              <div class="opt"><code>--type</code><span>Use a custom component type from your config</span></div>
+              <div class="opt"><code>--withIndex</code><span>Generate a barrel index file</span></div>
+              <div class="opt"><code>--client</code><span>Add the 'use client' directive (contexts)</span></div>
+              <div class="opt"><code>--customDirectory</code><span>Override the generated folder name</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta reveal">
+      <h2>Ship your next component in <span class="grad">4 seconds</span>.</h2>
+      <div class="install install-lg" data-copy="npm i -g casting-cli">
+        <span class="prompt">$</span>
+        <code>npm i -g casting-cli</code>
+        <button class="copy-btn" aria-label="Copy install command">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        </button>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://www.npmjs.com/package/casting-cli" target="_blank" rel="noopener">Install from npm</a>
+        <a class="btn btn-ghost" href="https://github.com/Aditya060806/Casting" target="_blank" rel="noopener">Star on GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="M3 12l9 5 9-5" /><path d="M3 16l9 5 9-5" />
+            </svg>
+          </span>
+          <span class="brand-name">Casting</span>
+        </a>
+        <p>A fast, zero-config React CLI for components, hooks, and contexts.</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Project</h5>
+        <a href="https://github.com/Aditya060806/Casting" target="_blank" rel="noopener">GitHub Repository</a>
+        <a href="https://www.npmjs.com/package/casting-cli" target="_blank" rel="noopener">npm Package</a>
+        <a href="https://github.com/Aditya060806/Casting/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Built by Aditya Pandey</h5>
+        <a href="https://www.linkedin.com/in/aditya-pandey-p1002/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/Aditya060806" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Casting · MIT Licensed</span>
+      <span>Crafted by <a href="https://www.linkedin.com/in/aditya-pandey-p1002/" target="_blank" rel="noopener">Aditya Pandey</a></span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
