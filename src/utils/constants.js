@@ -7,7 +7,7 @@ export const WHITESPACE_REGEX = /\s+/;
 
 // Public JSON schema used for editor autocomplete/validation in casting.json.
 export const SCHEMA_URL
-  = 'https://raw.githubusercontent.com/Aditya060806/Harvest/main/schema/casting.schema.json';
+  = 'https://raw.githubusercontent.com/Aditya060806/Casting/main/schema/casting.schema.json';
 
 // Default component block written into a fresh config.
 export const DEFAULT_COMPONENT_CONFIG = {

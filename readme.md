@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Aditya060806/Harvest/main/docs/assets/casting.svg?raw=true" alt="Casting" width="140" />
+<img src="https://raw.githubusercontent.com/Aditya060806/Casting/main/docs/assets/casting.svg?raw=true" alt="Casting" width="140" />
 
 # Casting
 
@@ -8,9 +8,9 @@
 
 [![npm version](https://img.shields.io/npm/v/casting-cli.svg?color=%230b7285&label=casting-cli)](https://www.npmjs.com/package/casting-cli)
 [![npm downloads](https://img.shields.io/npm/dm/casting-cli.svg?color=%232f9e44)](https://www.npmjs.com/package/casting-cli)
-[![CI](https://github.com/Aditya060806/Harvest/actions/workflows/ci.yml/badge.svg)](https://github.com/Aditya060806/Harvest/actions/workflows/ci.yml)
+[![CI](https://github.com/Aditya060806/Casting/actions/workflows/ci.yml/badge.svg)](https://github.com/Aditya060806/Casting/actions/workflows/ci.yml)
 [![Node](https://img.shields.io/node/v/casting-cli.svg?color=%23339af0)](https://nodejs.org)
-[![License: MIT](https://img.shields.io/npm/l/casting-cli.svg?color=%23845ef7)](https://github.com/Aditya060806/Harvest/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/npm/l/casting-cli.svg?color=%23845ef7)](https://github.com/Aditya060806/Casting/blob/main/LICENSE)
 
 ```bash
 npx casting-cli component Box
@@ -171,7 +171,7 @@ Example `casting.json`:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/Aditya060806/Harvest/main/schema/casting.schema.json",
+  "$schema": "https://raw.githubusercontent.com/Aditya060806/Casting/main/schema/casting.schema.json",
   "usesTypeScript": true,
   "usesCssModule": true,
   "cssPreprocessor": "scss",
@@ -450,15 +450,15 @@ The npm package is `casting-cli`; the installed executable is `casting`. Use `np
 ## Contributing
 
 ```bash
-git clone https://github.com/Aditya060806/Harvest.git
-cd Harvest
+git clone https://github.com/Aditya060806/Casting.git
+cd Casting
 npm install
 npm test        # run the Vitest suite
 npm run lint    # check style
 ```
 
-Issues and PRs are welcome at [Aditya060806/Harvest](https://github.com/Aditya060806/Harvest).
+Issues and PRs are welcome at [Aditya060806/Casting](https://github.com/Aditya060806/Casting).
 
 ## License
 
-Casting is open source software [licensed as MIT](https://github.com/Aditya060806/Harvest/blob/main/LICENSE).
+Casting is open source software [licensed as MIT](https://github.com/Aditya060806/Casting/blob/main/LICENSE).

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/Aditya060806/Harvest/main/schema/casting.schema.json",
+  "$id": "https://raw.githubusercontent.com/Aditya060806/Casting/main/schema/casting.schema.json",
   "title": "Casting configuration",
   "description": "Configuration for the Casting React CLI (casting.json).",
   "type": "object",
